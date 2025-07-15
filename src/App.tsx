@@ -8,8 +8,8 @@ import { Eye } from 'lucide-react';
 import { EyeOff } from 'lucide-react';
 import { useState } from 'react';
 import Generatewallets from './components/Generatewallets';
+
 function App() {
-  const [mnemonic, setMnemonic] = useState("");
 const [phrases, setPhrases] = useState<string[]>([]);
 const [seed, setSeed] = useState("");
 const [showseed, setShowseed] = useState(false);
@@ -45,7 +45,6 @@ const [showcred, setShowcred] = useState(true);
       onClick={async () => {
         const mn = await generateMnemonic();
         console.log(mn);
-        setMnemonic(mn);
         generatePhrases(mn);
         const seed = mnemonicToSeedSync(mn);
         setSeed(seed.toString("hex"));
