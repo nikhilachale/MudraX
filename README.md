@@ -1,70 +1,42 @@
-# React + TypeScript + Vite
+# 🔷 MudraX
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+MudraX is a powerful Web3 DApp built on Solana that enables users to generate secure HD wallets and interact with the blockchain using browser wallets like Phantom or self-custodied wallets derived from mnemonics.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🚀 Features
 
-## Expanding the ESLint configuration
+### 🔐 HD Wallet Generator
+- Generate 12-word BIP-39 mnemonic
+- Derive Solana-compatible keypairs using hardened path `m/44'/501'/n'/0'`
+- View mnemonic, seed (hex), public key, and private key
+- Toggle sensitive information visibility
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### 🌐 Solana DApp Integration
+- Connect to browser wallets (Phantom, Solflare, Backpack) via `@solana/wallet-adapter`
+- Compatible with Devnet (Alchemy RPC)
 
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+### ⚙️ Blockchain Operations
+- 🔄 **Airdrop**: Request SOL from Devnet faucet
+- 💰 **View Balance**: Show SOL balance of connected wallet
+- 📤 **Send Tokens**: Transfer SOL to any address
+- ✍️ **Sign Messages**: Sign arbitrary messages with your wallet and verify signature validity
 
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
+---
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+## 🛠 Tech Stack
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- **Frontend**: React + TypeScript + Vite
+- **UI**: Tailwind CSS (Glassmorphism Design)
+- **Solana SDK**: `@solana/web3.js`, `@solana/wallet-adapter`
+- **Wallet Derivation**: `bip39`, `ed25519-hd-key`, `tweetnacl`, `bs58`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+---
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
-# MudraX
+## 📦 Installation
+
+```bash
+git clone https://github.com/your-username/mudrax.git
+cd mudrax
+npm install
+npm run dev
