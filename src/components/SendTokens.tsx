@@ -42,31 +42,62 @@ export  default function SendTokens() {
     }
 
     return (
-        <div className="flex flex-col items-center space-y-4">
-            <h2 className="text-2xl font-bold text-white">Send SOL Tokens</h2>
+        <div className="text-center space-y-6">
+            <div className="flex items-center justify-center space-x-2 mb-6">
+                <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
+                </svg>
+                <h2 className="text-2xl font-bold text-white">Send SOL</h2>
+            </div>
 
-            <input
-                type="text"
-                placeholder="Recipient Address"
-                value={to}
-                onChange={(e) => setTo(e.target.value)}
-                className="w-full sm:w-64 px-4 py-2 rounded-lg text-white bg-black/20 ring-2 ring-blue-200 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+            <div className="space-y-4">
+                <div>
+                    <label className="block text-white/70 text-sm font-medium mb-2 text-left">
+                        Recipient Address
+                    </label>
+                    <input
+                        type="text"
+                        placeholder="Enter Solana wallet address"
+                        value={to}
+                        onChange={(e) => setTo(e.target.value)}
+                        className="w-full px-6 py-4 rounded-xl text-white bg-black/30 border border-white/20 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent backdrop-blur-sm text-sm"
+                    />
+                </div>
 
-            <input
-                type="number"
-                placeholder="Amount in SOL"
-                value={amount}
-                onChange={(e) => setAmount(e.target.value)}
-                className="w-full sm:w-64 px-4 py-2 rounded-lg text-white bg-black/20 ring-2 ring-blue-200 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-blue-500"
-            />
+                <div>
+                    <label className="block text-white/70 text-sm font-medium mb-2 text-left">
+                        Amount (SOL)
+                    </label>
+                    <input
+                        type="number"
+                        placeholder="0.00"
+                        value={amount}
+                        step="0.01"
+                        min="0"
+                        onChange={(e) => setAmount(e.target.value)}
+                        className="w-full px-6 py-4 rounded-xl text-white bg-black/30 border border-white/20 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent backdrop-blur-sm"
+                    />
+                </div>
 
-            <button
-                onClick={sendTokens}
-                className="bg-blue-600 hover:bg-blue-700 text-white font-semibold px-6 py-2 rounded-lg transition-all duration-300 shadow-lg hover:shadow-xl w-full sm:w-64"
-            >
-                Send
-            </button>
+                {to && amount && (
+                    <div className="bg-white/10 rounded-lg p-4 text-left space-y-2">
+                        <h4 className="font-semibold text-white">Transaction Preview</h4>
+                        <div className="text-sm text-white/70 space-y-1">
+                            <div>Amount: <span className="text-white font-medium">{amount} SOL</span></div>
+                            <div>To: <span className="text-white font-mono text-xs break-all">{to.slice(0, 8)}...{to.slice(-8)}</span></div>
+                            <div>Network Fee: <span className="text-white font-medium">~0.000005 SOL</span></div>
+                        </div>
+                    </div>
+                )}
+
+                <button
+                    onClick={sendTokens}
+                    disabled={!to || !amount || !publicKey}
+                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02]"
+                >
+                    {!publicKey ? 'Connect Wallet First' : 'Send SOL'}
+                </button>
+            </div>
         </div>
     );
 }
