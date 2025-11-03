@@ -44,7 +44,7 @@ export  default function SendTokens() {
     return (
         <div className="text-center space-y-6">
             <div className="flex items-center justify-center space-x-2 mb-6">
-                <svg className="w-8 h-8 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-8 h-8 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
                 </svg>
                 <h2 className="text-2xl font-bold text-white">Send SOL</h2>
@@ -93,7 +93,7 @@ export  default function SendTokens() {
                 <button
                     onClick={sendTokens}
                     disabled={!to || !amount || !publicKey}
-                    className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02]"
+                    className="w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-8 py-4 rounded-xl transition-all duration-300 shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-[1.02]"
                 >
                     {!publicKey ? 'Connect Wallet First' : 'Send SOL'}
                 </button>

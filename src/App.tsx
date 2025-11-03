@@ -5,7 +5,9 @@ function App() {
   const navigate = useNavigate();
 
   return (
+    
     <div className="px-4 pt-8 pb-12 text-neutral-100 min-h-screen flex items-center">
+      
       <main className="max-w-6xl mx-auto w-full">
         <div className="text-center space-y-16">
           {/* Hero Section */}

@@ -1,7 +1,8 @@
 
  
- import { Outlet, Link } from 'react-router-dom'
+import { Outlet, Link } from 'react-router-dom'
 import { Wallet, Coins, Send } from 'lucide-react'
+import { WalletMultiButton, WalletDisconnectButton } from '@solana/wallet-adapter-react-ui';
 
 function Layout() {
   return (
@@ -14,7 +15,7 @@ function Layout() {
         </div>
         
         {/* Navigation */}
-        <nav className="hidden md:flex space-x-6">
+        <nav className="hidden md:flex items-center space-x-6">
           <Link 
             to="/" 
             className="flex items-center space-x-1 text-white/80 hover:text-white transition-colors"
@@ -37,6 +38,12 @@ function Layout() {
             <span>Wallet</span>
           </Link>
         </nav>
+
+        {/* Wallet Controls (available on all pages) */}
+        <div className="flex items-center space-x-3">
+          <WalletMultiButton className="!bg-gradient-to-r !from-blue-500 !to-purple-600 !text-white !rounded-xl !px-4 !py-2 !font-semibold !shadow" />
+          <WalletDisconnectButton className="!bg-white/10 !text-white !px-3 !py-2 !rounded-xl !font-medium !backdrop-blur-md !border !border-white/20 hover:!bg-white hover:!text-black" />
+        </div>
       </header>
 
       {/* Main Content */}
