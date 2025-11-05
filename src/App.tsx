@@ -1,12 +1,13 @@
 import { IconWallet } from '@tabler/icons-react';
 import { useNavigate } from 'react-router-dom';
+import { Wallet as WalletIconPh, RocketLaunch, Coins } from "phosphor-react";
 
 function App() {
   const navigate = useNavigate();
 
   return (
     
-    <div className="px-4 pt-8 pb-12 text-neutral-100 min-h-screen flex items-center">
+    <div className="px-4 pt-8 pb-12  bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900  text-neutral-100 min-h-screen flex items-center">
       
       <main className="max-w-6xl mx-auto w-full">
         <div className="text-center space-y-16">
@@ -32,170 +33,120 @@ function App() {
             </p>
           </div>
 
-          {/* Enhanced Feature Cards */}
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-            {[
-              {
-                title: "HD Wallet",
-                subtitle: "Multi-Chain Wallet Generation",
-                desc: "Generate secure wallets for Bitcoin, Ethereum & Solana. Create unlimited addresses from one master seed phrase using industry-standard BIP44 derivation.",
-                gradient: "from-blue-500 to-purple-600",
-                hoverGradient: "from-blue-600 to-purple-700",
-                glowColor: "blue-500",
-                tags: [
-                  { name: "Bitcoin", color: "bg-orange-500/20 text-orange-300" },
-                  { name: "Ethereum", color: "bg-blue-500/20 text-blue-300" },
-                  { name: "Solana", color: "bg-green-500/20 text-green-300" },
-                ],
-                features: ["BIP44 Standard", "Secure Generation", "Multi-Chain Support"],
-                path: "/wallet",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                ),
-              },
-              {
-                title: "DApp Console",
-                subtitle: "Solana Blockchain Interface",
-                desc: "Connect your favorite wallets and interact with Solana blockchain. Send SOL tokens, request devnet airdrops, and sign messages securely.",
-                gradient: "from-emerald-500 to-cyan-500",
-                hoverGradient: "from-emerald-600 to-cyan-600",
-                glowColor: "emerald-500",
-                tags: [
-                  { name: "Send SOL", color: "bg-orange-500/20 text-orange-300" },
-                  { name: "Airdrop", color: "bg-yellow-500/20 text-yellow-300" },
-                  { name: "Sign Messages", color: "bg-pink-500/20 text-pink-300" },
-                ],
-                features: ["Wallet Integration", "Real-time Transactions", "Devnet Testing"],
-                path: "/dapp",
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                ),
-              },
-              {
-                title: "Secure & Open",
-                subtitle: "Trust Through Transparency",
-                desc: "Built with industry-standard cryptographic protocols. Open-source codebase ensures transparency and community-driven security verification.",
-                gradient: "from-violet-500 to-fuchsia-500",
-                hoverGradient: "from-violet-600 to-fuchsia-600",
-                glowColor: "violet-500",
-                tags: [
-                  { name: "BIP44", color: "bg-green-500/20 text-green-300" },
-                  { name: "Client-side", color: "bg-blue-500/20 text-blue-300" },
-                  { name: "Open Source", color: "bg-purple-500/20 text-purple-300" },
-                ],
-                features: ["Zero Data Collection", "Auditable Code", "Community Verified"],
-                icon: (
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                ),
-              },
-            ].map((card, i) => (
-              <div
-                key={i}
-                onClick={() => card.path && navigate(card.path)}
-                className="relative bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl group cursor-pointer transition-all duration-700 hover:border-white/30 hover:bg-white/10 transform hover:-translate-y-2 hover:shadow-2xl overflow-hidden"
-              >
-                {/* Background Glow Effect */}
-                <div className={`absolute inset-0 bg-gradient-to-br ${card.gradient} opacity-0 group-hover:opacity-10 transition-opacity duration-700 rounded-3xl`}></div>
-                
-                {/* Animated Border Gradient */}
-                <div className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-700">
-                  <div className={`absolute inset-0 bg-gradient-to-r ${card.gradient} rounded-3xl blur-xl opacity-30`}></div>
+          {/* Enhanced Feature Cards (updated: Wallet, DApp, Launchpad) */}
+          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}">
+            {/* Card: Create & Manage Wallet */}
+            <div
+              onClick={() => navigate('/wallet')}
+              className="relative bg-white/4 backdrop-blur-xl border border-white/8 p-8 rounded-3xl group cursor-pointer transition-transform duration-600 hover:-translate-y-3 hover:shadow-2xl overflow-hidden will-change-transform"
+              style={{ transitionDelay: `0ms` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 opacity-0 group-hover:opacity-8 transition-opacity duration-700 rounded-3xl pointer-events-none"></div>
+
+              <div className="relative z-10 flex flex-col items-start space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-black/50 border border-white/6 flex items-center justify-center shadow-inner">
+                    {/* wallet icon (phosphor) */}
+                    <WalletIconPh size={28} weight="duotone" className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">Create & Manage Wallet</h3>
+                    <p className="text-white/60 text-sm">One HD seed to manage Bitcoin, Ethereum & Solana — secure BIP44 derivation.</p>
+                  </div>
                 </div>
 
-                {/* Content Container */}
-                <div className="relative z-10 flex flex-col items-center text-center space-y-6">
-                  {/* Icon Container */}
-                  <div className="relative">
-                    <div className={`absolute inset-0 bg-gradient-to-r ${card.gradient} rounded-2xl blur-lg opacity-0 group-hover:opacity-50 transition-all duration-500 scale-110`}></div>
-                    <div
-                      className={`relative w-20 h-20 bg-gradient-to-r ${card.gradient} rounded-2xl flex items-center justify-center group-hover:scale-110 group-hover:rotate-3 transition-all duration-500 shadow-lg`}
-                    >
-                      <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        {card.icon}
-                      </svg>
-                    </div>
-                  </div>
-
-                  {/* Text Content */}
-                  <div className="space-y-3">
-                    <div className="space-y-1">
-                      <h3 className="text-2xl font-bold text-white group-hover:text-transparent group-hover:bg-gradient-to-r group-hover:bg-clip-text transition-all duration-500" style={{backgroundImage: `linear-gradient(to right, var(--tw-gradient-stops))`}}>
-                        {card.title}
-                      </h3>
-                      <p className="text-white/60 text-xs font-medium uppercase tracking-wider">
-                        {card.subtitle}
-                      </p>
-                    </div>
-                    
-                    {/* Description with slide-up animation */}
-                    <p className="text-white/70 text-sm leading-relaxed opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-150 max-w-sm mx-auto">
-                      {card.desc}
-                    </p>
-
-                    {/* Feature Pills */}
-                    <div className="opacity-0 translate-y-2 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-300">
-                      <div className="flex flex-wrap gap-1.5 justify-center mb-4">
-                        {card.features?.map((feature, j) => (
-                          <span
-                            key={j}
-                            className="bg-white/10 text-white/80 px-2 py-1 rounded-full text-xs font-medium border border-white/20"
-                          >
-                            {feature}
-                          </span>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Technology Tags */}
-                  <div className="flex flex-wrap gap-2 justify-center opacity-90 group-hover:opacity-100 transition-opacity duration-500">
-                    {card.tags.map((tag, j) => (
-                      <span
-                        key={j}
-                        className={`${tag.color} px-3 py-1.5 rounded-full text-xs font-semibold backdrop-blur-sm border border-white/10 transition-all duration-300 hover:scale-105`}
-                      >
-                        {tag.name}
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Call-to-Action */}
-                  {card.path && (
-                    <div className="opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-700 delay-500">
-                      <div className="flex items-center space-x-2 text-white/60 text-sm font-medium">
-                        <span>Click to explore</span>
-                        <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </div>
-                    </div>
-                  )}
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">BIP44</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Multi-chain</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Secure</span>
                 </div>
 
-                {/* Decorative Elements */}
-                <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-20 transition-opacity duration-700">
-                  <div className={`w-8 h-8 bg-gradient-to-r ${card.gradient} rounded-full blur-lg`}></div>
-                </div>
-                <div className="absolute bottom-4 left-4 opacity-0 group-hover:opacity-20 transition-opacity duration-700">
-                  <div className={`w-6 h-6 bg-gradient-to-r ${card.gradient} rounded-full blur-lg`}></div>
+                <div className="mt-2">
+                  <div className="text-sm text-white/60 flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-black/30 border border-white/6">•</span>
+                    <span>Generate addresses, view balances, export seed (securely)</span>
+                  </div>
                 </div>
               </div>
-            ))}
+
+              {/* subtle cyber accent */}
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.015),transparent 30%)] mix-blend-screen opacity-0 group-hover:opacity-30 transition-opacity duration-700 rounded-3xl"></div>
+            </div>
+
+            {/* Card: DApp Console */}
+            <div
+              onClick={() => navigate('/dapp')}
+              className="relative bg-white/4 backdrop-blur-xl border border-white/8 p-8 rounded-3xl group cursor-pointer transition-transform duration-600 hover:-translate-y-3 hover:shadow-2xl overflow-hidden will-change-transform"
+              style={{ transitionDelay: `90ms` }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-cyan-500 opacity-0 group-hover:opacity-8 transition-opacity duration-700 rounded-3xl pointer-events-none"></div>
+
+              <div className="relative z-10 flex flex-col items-start space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-black/50 border border-white/6 flex items-center justify-center shadow-inner">
+                    {/* rocket/send icon (phosphor) */}
+                    <RocketLaunch size={28} weight="duotone" className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">DApp Console</h3>
+                    <p className="text-white/60 text-sm">Connect wallets, request devnet airdrops, send SOL and sign messages.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Send SOL</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Airdrop</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Sign</span>
+                </div>
+
+                <div className="mt-2">
+                  <div className="text-sm text-white/60 flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-black/30 border border-white/6">•</span>
+                    <span>Devnet testing tools and transaction utilities for builders.</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.015),transparent 30%)] mix-blend-screen opacity-0 group-hover:opacity-30 transition-opacity duration-700 rounded-3xl"></div>
+            </div>
+
+            {/* Card: Token Launchpad (slightly highlighted) */}
+            <div
+              onClick={() => navigate('/dapp')}
+              className="relative bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl group cursor-pointer transition-transform duration-600 hover:-translate-y-3 hover:shadow-2xl overflow-hidden will-change-transform"
+              style={{ transitionDelay: `180ms`, boxShadow: '0 10px 30px rgba(99,102,241,0.06)' }}
+            >
+              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-violet-600 opacity-0 group-hover:opacity-12 transition-opacity duration-700 rounded-3xl pointer-events-none"></div>
+
+              <div className="relative z-10 flex flex-col items-start space-y-6">
+                <div className="flex items-center gap-4">
+                  <div className="w-14 h-14 rounded-xl bg-black/60 border border-white/10 flex items-center justify-center shadow-inner">
+                    {/* token icon (phosphor) */}
+                    <Coins size={28} weight="duotone" className="text-white" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl font-semibold text-white">Token Launchpad</h3>
+                    <p className="text-white/60 text-sm">Create a professional token with on-chain metadata and initial minting — minimal-pro workflow.</p>
+                  </div>
+                </div>
+
+                <div className="flex flex-wrap gap-2">
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Mint</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Metadata</span>
+                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">ATA</span>
+                </div>
+
+                <div className="mt-2">
+                  <div className="text-sm text-white/60 flex items-center gap-2">
+                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-black/30 border border-white/6">•</span>
+                    <span>On-chain metadata pointer, initial supply minting, and ATA setup.</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* subtle scanline overlay */}
+              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent 6px,rgba(255,255,255,0.01) 6px)] opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-3xl"></div>
+            </div>
           </div>
 
           {/* Quick Start Guide */}

@@ -1,103 +1,246 @@
-import { useState, type ReactElement } from 'react';
+import {
+	createAssociatedTokenAccountInstruction,
+	createInitializeMetadataPointerInstruction,
+	createInitializeMintInstruction,
+	createMintToInstruction,
+	ExtensionType,
+	getAssociatedTokenAddress,
+	getMintLen,
+	LENGTH_SIZE,
+	TOKEN_2022_PROGRAM_ID,
+	TYPE_SIZE,
+} from "@solana/spl-token";
+import {
+	createInitializeInstruction as createInitializeMetadataInstruction,
+	pack,
+	type TokenMetadata,
+} from "@solana/spl-token-metadata";
+import { useConnection, useWallet } from "@solana/wallet-adapter-react";
 import { Keypair, SystemProgram, Transaction } from "@solana/web3.js";
-import { useConnection, useWallet } from '@solana/wallet-adapter-react';
-import { MINT_SIZE, TOKEN_PROGRAM_ID, createInitializeMint2Instruction, getMinimumBalanceForRentExemptMint } from "@solana/spl-token";
+import { useState } from "react";
 
-export default function TokenLaunchpad(): ReactElement {
-    const { connection } = useConnection();
-    const wallet = useWallet();
 
-    const [name, setName] = useState('');
-    const [symbol, setSymbol] = useState('');
-    const [image, setImage] = useState('');
-    const [supply, setSupply] = useState('1000000');
-    const [isCreating, setIsCreating] = useState(false);
+export default function TokenLaunchpad() {
+	const [loading, setLoading] = useState(false);
+	const [name, setName] = useState("");
+	const [symbol, setSymbol] = useState("");
+	const [image, setImage] = useState("");
+	const [supply, setSupply] = useState(100);
 
-    async function createToken() {
-        if (!wallet || !wallet.publicKey) {
-            alert('Please connect your wallet first');
-            return;
-        }
+	const { connection } = useConnection();
+	const { publicKey, signTransaction } = useWallet();
 
-        setIsCreating(true);
-        try {
-            const mintKeypair = Keypair.generate();
-            const lamports = await getMinimumBalanceForRentExemptMint(connection);
+	async function createToken() {
+		if (!publicKey || !signTransaction) {
+			alert("Please connect your wallet first");
+			return;
+		}
 
-            const transaction = new Transaction().add(
-                SystemProgram.createAccount({
-                    fromPubkey: wallet.publicKey,
-                    newAccountPubkey: mintKeypair.publicKey,
-                    space: MINT_SIZE,
-                    lamports,
-                    programId: TOKEN_PROGRAM_ID,
-                }),
-                createInitializeMint2Instruction(mintKeypair.publicKey, 9, wallet.publicKey, wallet.publicKey, TOKEN_PROGRAM_ID)
-            );
+		setLoading(true);
 
-            transaction.feePayer = wallet.publicKey;
-            transaction.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-            transaction.partialSign(mintKeypair);
+		try {
+			const mintKeypair = Keypair.generate();
+			const metadata: TokenMetadata = {
+				updateAuthority: publicKey,
+				mint: mintKeypair.publicKey,
+				name: name,
+				symbol: symbol,
+				uri: "https://nikhilachale.github.io/Coin-metadata/data.json",
+				additionalMetadata: [
+					[
+						"description",
+						`${name} - Created with Solana Token Creator`,
+					],
+					["icon", image || "default"],
+				],
+			};
 
-            const sig = await wallet.sendTransaction(transaction, connection);
-            console.log(`Token mint created at ${mintKeypair.publicKey.toBase58()}, sig: ${sig}`);
-            alert(`Token created: ${mintKeypair.publicKey.toBase58()}`);
-        } catch (err) {
-            console.error('Token creation failed', err);
-            alert('Token creation failed: ' + ((err as any)?.message || String(err)));
-        } finally {
-            setIsCreating(false);
-        }
-    }
+			const extensions = [ExtensionType.MetadataPointer];
+			const mintLen = getMintLen(extensions);
+			const metadataLen = TYPE_SIZE + LENGTH_SIZE + pack(metadata).length;
+			const totalSpace = mintLen + metadataLen;
+			const lamports = await connection.getMinimumBalanceForRentExemption(
+				totalSpace
+			);
 
-    return (
-        <div className="w-full bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6">
-            <h3 className="text-lg font-semibold text-purple-300 mb-4">Token Launchpad</h3>
+			const createMintAccountIx = SystemProgram.createAccount({
+				fromPubkey: publicKey,
+				newAccountPubkey: mintKeypair.publicKey,
+				space: mintLen,
+				lamports,
+				programId: TOKEN_2022_PROGRAM_ID,
+			});
 
-            <div className="space-y-3">
-                <label className="block text-sm text-white/80">Name</label>
-                <input
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                    placeholder="Token name"
-                    className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm outline-none focus:border-purple-400"
-                />
+			const initMetadataPointerIx =
+				createInitializeMetadataPointerInstruction(
+					mintKeypair.publicKey,
+					publicKey,
+					mintKeypair.publicKey,
+					TOKEN_2022_PROGRAM_ID
+				);
 
-                <label className="block text-sm text-white/80">Symbol</label>
-                <input
-                    value={symbol}
-                    onChange={(e) => setSymbol(e.target.value)}
-                    placeholder="Token symbol (e.g. MUD)"
-                    className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm outline-none focus:border-purple-400"
-                />
+			const initMintIx = createInitializeMintInstruction(
+				mintKeypair.publicKey,
+				9,
+				publicKey,
+				null,
+				TOKEN_2022_PROGRAM_ID
+			);
 
-                <label className="block text-sm text-white/80">Image URL (optional)</label>
-                <input
-                    value={image}
-                    onChange={(e) => setImage(e.target.value)}
-                    placeholder="https://..."
-                    className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm outline-none focus:border-purple-400"
-                />
+			const initMetaIx = createInitializeMetadataInstruction({
+				metadata: mintKeypair.publicKey,
+				updateAuthority: metadata.updateAuthority!,
+				mint: metadata.mint,
+				mintAuthority: publicKey,
+				name: metadata.name,
+				symbol: metadata.symbol,
+				uri: metadata.uri,
+				programId: TOKEN_2022_PROGRAM_ID,
+			});
 
-                <label className="block text-sm text-white/80">Initial Supply</label>
-                <input
-                    value={supply}
-                    onChange={(e) => setSupply(e.target.value)}
-                    placeholder="1000000"
-                    type="number"
-                    className="w-full bg-black/50 border border-white/10 rounded-lg p-3 text-white text-sm outline-none focus:border-purple-400"
-                />
+			const tokenAccount = await getAssociatedTokenAddress(
+				mintKeypair.publicKey,
+				publicKey,
+				false,
+				TOKEN_2022_PROGRAM_ID
+			);
 
-                <div className="flex items-center justify-end space-x-3 mt-4">
-                    <button
-                        onClick={createToken}
-                        disabled={isCreating}
-                        className="bg-gradient-to-r from-green-500 to-teal-400 text-black font-semibold px-4 py-2 rounded-lg hover:scale-[1.02] transition-transform disabled:opacity-50"
-                    >
-                        {isCreating ? 'Creating…' : 'Create Token'}
-                    </button>
+			const createTokenAccountIx =
+				createAssociatedTokenAccountInstruction(
+					publicKey,
+					tokenAccount,
+					publicKey,
+					mintKeypair.publicKey,
+					TOKEN_2022_PROGRAM_ID
+				);
+
+			const initialSupply = supply * Math.pow(10, 9);
+			const mintToIx = createMintToInstruction(
+				mintKeypair.publicKey,
+				tokenAccount,
+				publicKey,
+				initialSupply,
+				[],
+				TOKEN_2022_PROGRAM_ID
+			);
+
+			const tx = new Transaction().add(
+				createMintAccountIx,
+				initMetadataPointerIx,
+				initMintIx,
+				initMetaIx,
+				createTokenAccountIx,
+				mintToIx
+			);
+
+			tx.feePayer = publicKey;
+			tx.recentBlockhash = (
+				await connection.getLatestBlockhash()
+			).blockhash;
+			tx.partialSign(mintKeypair);
+
+			const signedTx = await signTransaction(tx);
+			const txid = await connection.sendRawTransaction(
+				signedTx.serialize()
+			);
+
+			const latestBlockhash = await connection.getLatestBlockhash();
+			await connection.confirmTransaction(
+				{
+					signature: txid,
+					blockhash: latestBlockhash.blockhash,
+					lastValidBlockHeight: latestBlockhash.lastValidBlockHeight,
+				},
+				"confirmed"
+			);
+
+			console.log("Token created successfully!");
+			console.log("Mint address:", mintKeypair.publicKey.toString());
+			console.log("Token account:", tokenAccount.toString());
+			console.log("Transaction ID:", txid);
+
+			// Reset form
+			setName("");
+			setSymbol("");
+			setSupply(100);
+			setImage("");
+		} catch (error: any) {
+			console.error("Token creation error:", error);
+			console.error(
+				error.message || "Failed to create token. Please try again."
+			);
+		} finally {
+			setLoading(false);
+		}
+	}
+
+	return (
+		<div className="text-center space-y-6">
+            <div className="flex items-center justify-center space-x-3 mb-4">
+                <svg className="w-8 h-8 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2" />
+                </svg>
+                <h2 className="text-2xl font-bold text-white">Token Launchpad</h2>
+            </div>
+
+            <div className="bg-white/5 backdrop-blur-md border border-white/10 rounded-2xl p-6 text-left">
+               
+                <div className="space-y-4">
+                    <div>
+                        <label className="block text-white/70 text-sm mb-2">Token Name</label>
+                        <input
+                            value={name}
+                            onChange={(e) => setName(e.target.value)}
+                            placeholder="Name"
+                            className="w-full px-6 py-4 rounded-xl text-white bg-black/30 border border-white/20 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-white/70 text-sm mb-2">Symbol</label>
+                        <input
+                            value={symbol}
+                            onChange={(e) => setSymbol(e.target.value)}
+                            placeholder="Symbol (e.g. MUD)"
+                            className="w-full px-6 py-4 rounded-xl text-white bg-black/30 border border-white/20 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-white/70 text-sm mb-2">Initial Supply</label>
+                        <input
+                            value={supply}
+                            onChange={(e) => setSupply(Number(e.target.value))}
+                            type="number"
+                            min={0}
+                            placeholder="Initial Supply"
+                            className="w-full px-6 py-4 rounded-xl text-white bg-black/30 border border-white/20 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+
+                    <div>
+                        <label className="block text-white/70 text-sm mb-2">Image URL (optional)</label>
+                        <input
+                            value={image}
+                            onChange={(e) => setImage(e.target.value)}
+                            placeholder="https://..."
+                            className="w-full px-6 py-4 rounded-xl text-white bg-black/30 border border-white/20 placeholder-gray-300 font-medium focus:outline-none focus:ring-2 focus:ring-green-500"
+                        />
+                    </div>
+
+                    <div className="flex items-center justify-end mt-2">
+                        <button
+                            onClick={createToken}
+                            disabled={loading || !publicKey}
+                            className={`w-full bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white font-semibold px-6 py-3 rounded-xl transition-transform hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed`}
+                        >
+                            {loading ? 'Creating...' : (publicKey ? 'Create Token' : 'Connect Wallet First')}
+                        </button>
+                    </div>
                 </div>
+
+                <p className="mt-4 text-xs text-white/60 text-center select-none">{publicKey ? `Wallet: ${publicKey.toBase58().slice(0,8)}...` : 'Connect your wallet to create a token'}</p>
             </div>
         </div>
-    );
+	);
 }
