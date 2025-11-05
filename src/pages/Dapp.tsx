@@ -122,15 +122,7 @@ function Dapp() {
 
       {/* Main content */}
       <main className="flex-1 px-4 md:px-8 py-8">
-        {/* Header */}
-        <div className="text-center space-y-3 mb-8">
-          <h1 className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent">
-            Solana DApp Console
-          </h1>
-          <p className="text-white/70 max-w-3xl mx-auto text-lg">
-            Connect your wallet and interact with the Solana blockchain. Request test SOL, send transactions, mint a token, and sign messages.
-          </p>
-        </div>
+       
 
         {/* Sections */}
         {active === 'wallet' && (

@@ -1,208 +1,133 @@
-import { IconWallet } from '@tabler/icons-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Wallet as WalletIconPh, RocketLaunch, Coins } from "phosphor-react";
+import {
+  Wallet as WalletIconPh,
+  RocketLaunch,
+  Coins,
+} from 'phosphor-react';
 
 function App() {
   const navigate = useNavigate();
+  const [ready, setReady] = useState(false);
+
+  useEffect(() => {
+    const timer = window.setTimeout(() => setReady(true), 200);
+    return () => window.clearTimeout(timer);
+  }, []);
 
   return (
-    
-    <div className="px-4 pt-8 pb-12  bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900  text-neutral-100 min-h-screen flex items-center">
-      
-      <main className="max-w-6xl mx-auto w-full">
-        <div className="text-center space-y-16">
-          {/* Hero Section */}
-          <div className="space-y-8">
-            <div className="flex justify-center mb-8">
-              <div className="relative">
-                <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full blur-2xl opacity-30 animate-pulse"></div>
-                <IconWallet color="white" stroke={1.2} size={120} className="relative z-10" />
-              </div>
-            </div>
-            
-            <h1 className="text-5xl md:text-7xl font-black text-white leading-tight">
-              Launch your
-              <span className="bg-gradient-to-r from-blue-400 via-purple-500 to-blue-600 bg-clip-text text-transparent block md:inline md:ml-4">
-                Web3 Experience
-              </span>
-            </h1>
-            
-            <p className="text-xl md:text-2xl text-white/70 max-w-4xl mx-auto leading-relaxed">
-              Create secure HD wallets, manage multiple blockchains, and interact with decentralized applications. 
-              Your gateway to the future of finance.
-            </p>
-          </div>
+    <div className="relative min-h-screen bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 text-white">
+      <div className="pointer-events-none absolute inset-0 opacity-40">
+        <div className="absolute -top-48 -left-32 h-96 w-96 rounded-full bg-blue-500/30 blur-3xl"></div>
+        <div className="absolute top-1/3 -right-40 h-[28rem] w-[28rem] rounded-full bg-purple-600/20 blur-3xl"></div>
+        <div className="absolute bottom-0 left-1/3 h-72 w-72 rounded-full bg-cyan-500/20 blur-3xl"></div>
+      </div>
 
-          {/* Enhanced Feature Cards (updated: Wallet, DApp, Launchpad) */}
-          <div className="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16 transition-opacity duration-700 ${ready ? 'opacity-100' : 'opacity-0'}">
-            {/* Card: Create & Manage Wallet */}
-            <div
-              onClick={() => navigate('/wallet')}
-              className="relative bg-white/4 backdrop-blur-xl border border-white/8 p-8 rounded-3xl group cursor-pointer transition-transform duration-600 hover:-translate-y-3 hover:shadow-2xl overflow-hidden will-change-transform"
-              style={{ transitionDelay: `0ms` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-blue-500 to-purple-600 opacity-0 group-hover:opacity-8 transition-opacity duration-700 rounded-3xl pointer-events-none"></div>
-
-              <div className="relative z-10 flex flex-col items-start space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-black/50 border border-white/6 flex items-center justify-center shadow-inner">
-                    {/* wallet icon (phosphor) */}
-                    <WalletIconPh size={28} weight="duotone" className="text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white">Create & Manage Wallet</h3>
-                    <p className="text-white/60 text-sm">One HD seed to manage Bitcoin, Ethereum & Solana — secure BIP44 derivation.</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">BIP44</span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Multi-chain</span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Secure</span>
-                </div>
-
-                <div className="mt-2">
-                  <div className="text-sm text-white/60 flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-black/30 border border-white/6">•</span>
-                    <span>Generate addresses, view balances, export seed (securely)</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* subtle cyber accent */}
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.015),transparent 30%)] mix-blend-screen opacity-0 group-hover:opacity-30 transition-opacity duration-700 rounded-3xl"></div>
-            </div>
-
-            {/* Card: DApp Console */}
-            <div
-              onClick={() => navigate('/dapp')}
-              className="relative bg-white/4 backdrop-blur-xl border border-white/8 p-8 rounded-3xl group cursor-pointer transition-transform duration-600 hover:-translate-y-3 hover:shadow-2xl overflow-hidden will-change-transform"
-              style={{ transitionDelay: `90ms` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500 to-cyan-500 opacity-0 group-hover:opacity-8 transition-opacity duration-700 rounded-3xl pointer-events-none"></div>
-
-              <div className="relative z-10 flex flex-col items-start space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-black/50 border border-white/6 flex items-center justify-center shadow-inner">
-                    {/* rocket/send icon (phosphor) */}
-                    <RocketLaunch size={28} weight="duotone" className="text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white">DApp Console</h3>
-                    <p className="text-white/60 text-sm">Connect wallets, request devnet airdrops, send SOL and sign messages.</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Send SOL</span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Airdrop</span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Sign</span>
-                </div>
-
-                <div className="mt-2">
-                  <div className="text-sm text-white/60 flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-black/30 border border-white/6">•</span>
-                    <span>Devnet testing tools and transaction utilities for builders.</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.015),transparent 30%)] mix-blend-screen opacity-0 group-hover:opacity-30 transition-opacity duration-700 rounded-3xl"></div>
-            </div>
-
-            {/* Card: Token Launchpad (slightly highlighted) */}
-            <div
-              onClick={() => navigate('/dapp')}
-              className="relative bg-white/5 backdrop-blur-xl border border-white/10 p-8 rounded-3xl group cursor-pointer transition-transform duration-600 hover:-translate-y-3 hover:shadow-2xl overflow-hidden will-change-transform"
-              style={{ transitionDelay: `180ms`, boxShadow: '0 10px 30px rgba(99,102,241,0.06)' }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-br from-indigo-500 to-violet-600 opacity-0 group-hover:opacity-12 transition-opacity duration-700 rounded-3xl pointer-events-none"></div>
-
-              <div className="relative z-10 flex flex-col items-start space-y-6">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 rounded-xl bg-black/60 border border-white/10 flex items-center justify-center shadow-inner">
-                    {/* token icon (phosphor) */}
-                    <Coins size={28} weight="duotone" className="text-white" />
-                  </div>
-                  <div>
-                    <h3 className="text-xl font-semibold text-white">Token Launchpad</h3>
-                    <p className="text-white/60 text-sm">Create a professional token with on-chain metadata and initial minting — minimal-pro workflow.</p>
-                  </div>
-                </div>
-
-                <div className="flex flex-wrap gap-2">
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Mint</span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">Metadata</span>
-                  <span className="text-xs px-3 py-1 rounded-full bg-white/6 border border-white/8 text-white/80">ATA</span>
-                </div>
-
-                <div className="mt-2">
-                  <div className="text-sm text-white/60 flex items-center gap-2">
-                    <span className="inline-flex items-center justify-center w-8 h-8 rounded-lg bg-black/30 border border-white/6">•</span>
-                    <span>On-chain metadata pointer, initial supply minting, and ATA setup.</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* subtle scanline overlay */}
-              <div className="pointer-events-none absolute inset-0 bg-[repeating-linear-gradient(0deg,transparent,transparent 6px,rgba(255,255,255,0.01) 6px)] opacity-0 group-hover:opacity-20 transition-opacity duration-700 rounded-3xl"></div>
-            </div>
-          </div>
-
-          {/* Quick Start Guide */}
-          <div className="max-w-4xl mx-auto mb-16">
-            <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/20 rounded-2xl p-8">
-              <h3 className="text-2xl font-bold text-white mb-6 text-center">🚀 Quick Start Guide</h3>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                <div className="text-center space-y-3">
-                  <div className="w-12 h-12 bg-blue-500 rounded-full flex items-center justify-center mx-auto text-white font-bold text-lg">1</div>
-                  <h4 className="font-semibold text-white">Create Wallet</h4>
-                  <p className="text-white/70 text-sm">Generate a secure HD wallet with 12-word recovery phrase</p>
-                </div>
-                <div className="text-center space-y-3">
-                  <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center mx-auto text-white font-bold text-lg">2</div>
-                  <h4 className="font-semibold text-white">Add Addresses</h4>
-                  <p className="text-white/70 text-sm">Generate multiple addresses for Bitcoin, Ethereum, and Solana</p>
-                </div>
-                <div className="text-center space-y-3">
-                  <div className="w-12 h-12 bg-green-500 rounded-full flex items-center justify-center mx-auto text-white font-bold text-lg">3</div>
-                  <h4 className="font-semibold text-white">Use DApps</h4>
-                  <p className="text-white/70 text-sm">Connect to DApps and start transacting on Solana</p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex flex-col sm:flex-row justify-center items-center gap-6">
-            <button
-              onClick={() => navigate('/wallet')}
-              className="group relative bg-white/10 backdrop-blur-lg border border-white/30 text-white font-semibold py-5 px-12 rounded-2xl hover:bg-white hover:text-black transition-all duration-500 shadow-xl transform hover:scale-105 hover:shadow-2xl overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <span className="relative flex items-center space-x-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                <span>Launch HD Wallet</span>
-              </span>
-            </button>
-
-            <button
-              onClick={() => navigate('/dapp')}
-              className="group relative bg-gradient-to-r from-blue-500 to-purple-600 text-white font-semibold py-5 px-12 rounded-2xl hover:from-blue-600 hover:to-purple-700 transition-all duration-500 shadow-xl transform hover:scale-105 hover:shadow-2xl overflow-hidden"
-            >
-              <div className="absolute inset-0 bg-gradient-to-r from-white/20 to-white/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              <span className="relative flex items-center space-x-3">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
-                </svg>
-                <span>Launch DApp Console</span>
-              </span>
-            </button>
-          </div>
+      <div className="relative px-6 pb-16 pt-12 sm:px-8 lg:px-12">
+        
+        <div className="mx-auto max-w-3xl text-center">
+          <h1 className="text-4xl font-extrabold bg-gradient-to-r from-blue-400 to-purple-500 bg-clip-text text-transparent sm:text-5xl lg:text-6xl">
+            MudraX
+          </h1>
+          <p className="mt-4 max-w-2xl text-lg text-white/70">
+            The all-in-one Solana dev toolkit for HD wallets, DApp testing, and SPL token launches.
+          </p>
         </div>
-      </main>
+
+        <main className="mx-auto mt-12 flex max-w-6xl flex-col gap-16">
+       
+
+          <section className={`grid gap-8 transition duration-700 ${ready ? 'opacity-100 translate-y-0' : 'translate-y-6 opacity-0'} lg:grid-cols-3`}>
+            {[
+              {
+                icon: <WalletIconPh size={28} color='blue' weight="duotone" />,
+                title: 'HD Wallet Orchestration',
+                text: 'Generate, manage, and export multi-chain wallets backed by BIP44 derivation paths and pristine UX.',
+                accent: 'from-blue-500/20 to-purple-500/20',
+                action: () => navigate('/wallet'),
+              },
+              {
+                icon: <RocketLaunch size={28} weight="duotone" />,
+                title: 'DApp Execution Console',
+                text: 'Send SOL, request airdrops, and sign devnet payloads within a cohesive console ready for demos.',
+                accent: 'from-emerald-500/20 to-cyan-500/20',
+                action: () => navigate('/dapp'),
+              },
+              {
+                icon: <Coins size={28} color='yellow' weight="duotone" />,
+                title: 'Token Launchpad',
+                text: 'Spin up SPL tokens with metadata, initial supply minting, and ATA creation baked in.',
+                accent: 'from-indigo-500/20 to-violet-500/20',
+                action: () => navigate('/dapp'),
+              },
+            ].map((card, idx) => (
+              <button
+                key={card.title}
+                onClick={card.action}
+                className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-8 text-left transition-transform duration-500 hover:-translate-y-2 hover:border-white/30"
+                style={{ transitionDelay: `${idx * 70}ms` }}
+              >
+                <div className={`pointer-events-none absolute inset-0 bg-gradient-to-br ${card.accent} opacity-0 transition group-hover:opacity-60`}></div>
+                <div className="relative flex flex-col gap-6">
+                  <div className="flex items-center gap-4">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-white/20 bg-white/10 text-white/90 shadow-inner">
+                      {card.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold text-white">{card.title}</h3>
+                  </div>
+                  <p className="text-sm text-white/70">{card.text}</p>
+                  <div className="flex items-center gap-2 text-sm font-semibold text-white/80 transition group-hover:gap-3">
+                    Explore
+                    <span className="text-white/60">→</span>
+                  </div>
+                </div>
+              </button>
+            ))}
+          </section>
+
+          <section className="grid gap-10 rounded-[2.5rem] border border-white/10 bg-white/5 p-10 backdrop-blur-3xl lg:grid-cols-[1fr,1.1fr]">
+            <div className="space-y-6">
+              <h3 className="text-3xl font-semibold text-white">Zero to demo-ready in three moves.</h3>
+              <p className="text-white/70">
+                With curated flows, MudraX trims the rough edges around wallet creation, Solana devnet testing, and SPL token launch. Ship a polished prototype without diving into low-level clients.
+              </p>
+              <div className="flex flex-wrap gap-3 text-xs uppercase tracking-[0.3em] text-white/40">
+                <span className="rounded-full border border-white/10 px-4 py-2">BIP44</span>
+                <span className="rounded-full border border-white/10 px-4 py-2">SPL</span>
+                <span className="rounded-full border border-white/10 px-4 py-2">Devnet</span>
+                <span className="rounded-full border border-white/10 px-4 py-2">TypeScript</span>
+              </div>
+            </div>
+            <div className="grid gap-6 md:grid-cols-3">
+              {[
+                {
+                  number: '01',
+                  title: 'Initialize HD wallet',
+                  desc: 'Generate a 12-word recovery phrase and BIP44 accounts for Solana, Ethereum, and Bitcoin in seconds.',
+                },
+                {
+                  number: '02',
+                  title: 'Test inside the console',
+                  desc: 'Claim devnet SOL, transfer tokens, and sign payloads with built-in feedback states and analytics.',
+                },
+                {
+                  number: '03',
+                  title: 'Ship your token',
+                  desc: 'Configure metadata, mint supply, and auto-create ATA for distribution-ready tokens.',
+                },
+              ].map((step) => (
+                <div key={step.number} className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-white/5 p-6">
+                  <span className="text-sm font-semibold text-white/50">{step.number}</span>
+                  <h4 className="text-lg font-semibold text-white">{step.title}</h4>
+                  <p className="text-sm text-white/70">{step.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          
+        </main>
+      </div>
     </div>
   );
 }

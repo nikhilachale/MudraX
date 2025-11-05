@@ -29,7 +29,7 @@ function Layout() {
   return (
     <div className="min-h-screen bg-gradient-to-tr from-slate-900 via-blue-900 to-slate-700">
       {/* Header */}
-      <header className="w-full fixed top-0 left-0 right-0 z-50 bg-black/30 backdrop-blur-xl border-b border-white/10 shadow-lg">
+      <header className="w-full fixed top-0 left-0 right-0 z-50 bg-slate-900 backdrop-blur-xl border-b border-white/10 shadow-lg">
         <div className="max-w-7xl mx-auto flex items-center justify-between px-4 md:px-8 py-4">
           {/* Branding */}
           <div className="flex items-center space-x-3">
@@ -76,7 +76,7 @@ function Layout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-black/20 backdrop-blur-md text-white border-t border-white/10 mt-10">
+      <footer className="bg-slate-900 backdrop-blur-md text-white border-t border-white/10 mt-10">
         <div className="max-w-7xl mx-auto px-4 md:px-8 py-6">
           <div className="flex flex-col md:flex-row justify-between items-center gap-2">
             <div className="flex items-center space-x-2">
